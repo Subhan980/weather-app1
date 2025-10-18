@@ -1,11 +1,15 @@
-
-
 from flask import Flask, render_template, request
-import requests
+import requests, sqlite3
 
 app = Flask(__name__)
-
 API_KEY = "1ef925623ec4ed663bc3300f168fbb1a"
+
+def create_db():
+    conn = sqlite3.connect("weather.db")
+    conn.execute("CREATE TABLE IF NOT EXISTS favorites (city TEXT UNIQUE)")
+    conn.close()
+
+create_db()
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -29,4 +33,4 @@ def index():
     return render_template("weatherapp.html", weather=weather)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5010)
